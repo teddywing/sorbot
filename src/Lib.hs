@@ -8,5 +8,6 @@ import Plugin
 
 someFunc :: IO ()
 someFunc = do
-    let Just plugin = realMatchPlugin "75ac7b18a009ffe7a77a17a61d95c01395f36b44"
-    putStrLn $ performPlugin plugin
+    let message = "75ac7b18a009ffe7a77a17a61d95c01395f36b44"
+        Just plugin = realMatchPlugin message
+    putStrLn $ performPlugin plugin message

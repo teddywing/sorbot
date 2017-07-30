@@ -29,8 +29,8 @@ firstPlugin []     = Nothing
 firstPlugin (p:ps) = Just p
 
 -- TODO: Make a type for the `perform` function
-performPlugin :: Plugin -> String
-performPlugin p = perform p $ matchRegex p
+performPlugin :: Plugin -> String -> String
+performPlugin p message = perform p $ message =~ matchRegex p
 
 gitHubCommit = Plugin
     { matchRegex = "^[0-9a-f]{40}$"
