@@ -7,9 +7,11 @@ module Plugin
 
 import Text.Regex.TDFA
 
+type PluginAction = String -> String
+
 data Plugin = Plugin
     { matchRegex :: String
-    , perform    :: String -> String
+    , perform    :: PluginAction
     }
 
 instance Show Plugin where
@@ -24,7 +26,6 @@ matchPlugin message = firstPlugin $ matchPlugins message plugins
 matchPlugins :: String -> [Plugin] -> [Plugin]
 matchPlugins message plugins = [p | p <- plugins, message =~ matchRegex p]
 
--- TODO: Make a type for the `perform` function
 performPlugin :: Plugin -> String -> String
 performPlugin p message = perform p $ message =~ matchRegex p
 
@@ -33,7 +34,7 @@ gitHubCommit = Plugin
     , perform = gitHubCommitAction
     }
 
-gitHubCommitAction :: String -> String
+gitHubCommitAction :: PluginAction
 gitHubCommitAction match = "https://github.com/" ++ match
 
 plugins :: [Plugin]
