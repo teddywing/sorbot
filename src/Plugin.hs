@@ -7,6 +7,7 @@ module Plugin
 import Text.Regex.TDFA
 
 import Plugin.Base
+import Plugin.GitHubCommit
 
 matchPlugin :: String -> Maybe Plugin
 matchPlugin message = firstPlugin $ matchPlugins message plugins
@@ -19,14 +20,6 @@ matchPlugins message plugins = [p | p <- plugins, message =~ matchRegex p]
 
 performPlugin :: Plugin -> String -> String
 performPlugin p message = perform p $ message =~ matchRegex p
-
-gitHubCommit = Plugin
-    { matchRegex = "^[0-9a-f]{40}$"
-    , perform = gitHubCommitAction
-    }
-
-gitHubCommitAction :: PluginAction
-gitHubCommitAction match = "https://github.com/" ++ match
 
 plugins :: [Plugin]
 plugins =
