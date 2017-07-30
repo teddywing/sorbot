@@ -1,21 +1,12 @@
 module Plugin
-    ( Plugin
-    , matchPlugin
+    ( matchPlugin
     , performPlugin
     , plugins
     ) where
 
 import Text.Regex.TDFA
 
-type PluginAction = String -> String
-
-data Plugin = Plugin
-    { matchRegex :: String
-    , perform    :: PluginAction
-    }
-
-instance Show Plugin where
-    show (Plugin r p) = "matchRegex = " ++ r
+import Plugin.Base
 
 matchPlugin :: String -> Maybe Plugin
 matchPlugin message = firstPlugin $ matchPlugins message plugins
