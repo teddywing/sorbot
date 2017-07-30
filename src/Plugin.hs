@@ -1,6 +1,6 @@
 module Plugin
-    ( realMatchPlugin
-    , Plugin
+    ( Plugin
+    , matchPlugin
     , performPlugin
     , plugins
     ) where
@@ -15,18 +15,14 @@ data Plugin = Plugin
 instance Show Plugin where
     show (Plugin r p) = "matchRegex = " ++ r
 
-realMatchPlugin :: String -> Maybe Plugin
-realMatchPlugin message = matchPlugin message plugins
-
-matchPlugin :: String -> [Plugin] -> Maybe Plugin
-matchPlugin message plugins = firstPlugin $ matchPlugins message plugins
+matchPlugin :: String -> Maybe Plugin
+matchPlugin message = firstPlugin $ matchPlugins message plugins
+  where
+    firstPlugin []     = Nothing
+    firstPlugin (p:ps) = Just p
 
 matchPlugins :: String -> [Plugin] -> [Plugin]
 matchPlugins message plugins = [p | p <- plugins, message =~ matchRegex p]
-
-firstPlugin :: [Plugin] -> Maybe Plugin
-firstPlugin []     = Nothing
-firstPlugin (p:ps) = Just p
 
 -- TODO: Make a type for the `perform` function
 performPlugin :: Plugin -> String -> String
