@@ -2,8 +2,6 @@ module Lib
     ( someFunc
     ) where
 
-import Text.Regex.TDFA
-
 import Plugin
 
 someFunc :: IO ()
