@@ -2,8 +2,6 @@ module Plugin.Base
     ( PluginAction
 
     , Plugin(..)
-    , matchRegex
-    , perform
     ) where
 
 type PluginAction = String -> String
