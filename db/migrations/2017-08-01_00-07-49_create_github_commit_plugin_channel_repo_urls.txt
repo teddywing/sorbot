@@ -1,0 +1,12 @@
+Description: Create a table for the GitHub Commit plugin to store repo URLs
+Created: 2017-08-01 00:08:44.998857 UTC
+Depends:
+Apply: |
+  CREATE TABLE IF NOT EXISTS plugin_github_commit_channel_repo_urls (
+      id       INTEGER PRIMARY KEY,
+      channel  TEXT    NOT NULL,
+      repo_url TEXT    NOT NULL
+  );
+
+Revert: |
+  DROP TABLE plugin_github_commit_channel_repo_urls;
