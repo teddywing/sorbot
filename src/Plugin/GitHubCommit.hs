@@ -2,6 +2,9 @@ module Plugin.GitHubCommit
     ( gitHubCommit
     ) where
 
+import Text.Regex.TDFA
+
+import qualified Message as M
 import Plugin.Base
 
 gitHubCommit = Plugin
@@ -10,4 +13,5 @@ gitHubCommit = Plugin
     }
 
 gitHubCommitAction :: PluginAction
-gitHubCommitAction match = "https://github.com/" ++ match
+gitHubCommitAction message =
+    "https://github.com/" ++ M.text message =~ matchRegex gitHubCommit

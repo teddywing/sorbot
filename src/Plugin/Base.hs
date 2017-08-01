@@ -4,7 +4,9 @@ module Plugin.Base
     , Plugin(..)
     ) where
 
-type PluginAction = String -> String
+import Message
+
+type PluginAction = Message -> String
 
 data Plugin = Plugin
     { matchRegex :: String
