@@ -1,1 +1,0 @@
-DROP TABLE plugin_github_commit_channel_repo_urls;
