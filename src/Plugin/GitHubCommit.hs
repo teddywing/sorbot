@@ -16,8 +16,6 @@ gitHubCommit = Plugin
     , perform = gitHubCommitAction
     }
 
--- gitHubCommitAction :: IO PluginAction
--- gitHubCommitAction :: M.Message -> Connection -> IO String
 gitHubCommitAction :: PluginAction
 gitHubCommitAction message dbConn = do
     rs <- query_ dbConn "SELECT channel, repo_url \
@@ -35,7 +33,6 @@ type Id = Int
 type RepoUrl = String
 
 -- | A type to match the database table for this plugin.
--- data ChannelRepoUrl = ChannelRepoUrl Id M.Channel RepoUrl deriving (Show)
 data ChannelRepoUrl = ChannelRepoUrl
     { channel :: M.Channel
     , repoUrl :: RepoUrl
