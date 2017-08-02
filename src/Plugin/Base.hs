@@ -4,9 +4,12 @@ module Plugin.Base
     , Plugin(..)
     ) where
 
+import Database.SQLite.Simple
+
 import Message
 
-type PluginAction = Message -> String
+-- TODO: Replace Connection with a type class
+type PluginAction = Message -> Connection -> IO String
 
 data Plugin = Plugin
     { matchRegex :: String

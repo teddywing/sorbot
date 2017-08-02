@@ -2,6 +2,8 @@ module Lib
     ( someFunc
     ) where
 
+import Database.SQLite.Simple
+
 import Message
 import Plugin
 
@@ -13,4 +15,7 @@ someFunc = do
             , nick    = "anon"
             }
         Just plugin = matchPlugin message
-    putStrLn $ performPlugin plugin message
+    dbConn <- open "db/sorbot_development.sqlite3"
+    response <- performPlugin plugin message dbConn
+    putStrLn response
+    close dbConn
