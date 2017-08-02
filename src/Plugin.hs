@@ -23,7 +23,7 @@ matchPlugins message plugins =
     [p | p <- plugins, M.text message =~ matchRegex p]
 
 -- | Run the action belonging to the plugin, stored in its `perform` field.
-performPlugin :: Plugin -> M.Message -> String
+performPlugin :: Plugin -> PluginAction
 performPlugin p message = perform p $ message
 
 -- | The list of plugins to load
