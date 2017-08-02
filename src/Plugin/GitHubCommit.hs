@@ -16,8 +16,12 @@ gitHubCommitAction :: PluginAction
 gitHubCommitAction message =
     "https://github.com/" ++ M.text message =~ matchRegex gitHubCommit
 
+type Id = Int
+
+type RepoUrl = String
+
 -- | A type to match the database table for this plugin.
-data ChannelRepoUrl = ChannelRepoUrl Int String String deriving (Show)
+data ChannelRepoUrl = ChannelRepoUrl Id M.Channel RepoUrl deriving (Show)
 
 instance FromRow ChannelRepoUrl where
     fromRow = ChannelRepoUrl <$> field <*> field <*> field
