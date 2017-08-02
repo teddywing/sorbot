@@ -20,7 +20,7 @@ gitHubCommit = Plugin
 -- gitHubCommitAction :: M.Message -> Connection -> IO String
 gitHubCommitAction :: PluginAction
 gitHubCommitAction message dbConn = do
-    rs <- query_ dbConn "SELECT id, channel, repo_url \
+    rs <- query_ dbConn "SELECT channel, repo_url \
         \ FROM plugin_github_commit_channel_repo_urls \
         \ LIMIT 1" :: IO [ChannelRepoUrl]
     return $ response rs
@@ -37,10 +37,9 @@ type RepoUrl = String
 -- | A type to match the database table for this plugin.
 -- data ChannelRepoUrl = ChannelRepoUrl Id M.Channel RepoUrl deriving (Show)
 data ChannelRepoUrl = ChannelRepoUrl
-    { id      :: Id
-    , channel :: M.Channel
+    { channel :: M.Channel
     , repoUrl :: RepoUrl
     } deriving (Show)
 
 instance FromRow ChannelRepoUrl where
-    fromRow = ChannelRepoUrl <$> field <*> field <*> field
+    fromRow = ChannelRepoUrl <$> field <*> field
