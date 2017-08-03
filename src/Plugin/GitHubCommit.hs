@@ -18,17 +18,17 @@ gitHubCommit = Plugin
 
 gitHubCommitAction :: PluginAction
 gitHubCommitAction message dbConn = do
-    rs <- query dbConn "SELECT channel, repo_url \
+    rs <- query dbConn "SELECT repo_url \
         \ FROM plugin_github_commit_channel_repo_urls \
         \ WHERE channel = ? \
         \ LIMIT 1"
         (Only (M.channel message))
-        :: IO [ChannelRepoUrl]
+        :: IO [RepoUrlRow]
     return $ response rs
   where
     response []     = ""
-    response (r:rs) =
-        repoUrl r ++ "/commits/" ++ M.text message =~ matchRegex gitHubCommit
+    response ((RepoUrlRow r):rs) =
+        r ++ "/commits/" ++ M.text message =~ matchRegex gitHubCommit
 -- TODO: Make an Either type for plugins to return errors
 
 type Id = Int
@@ -36,10 +36,7 @@ type Id = Int
 type RepoUrl = String
 
 -- | A type to match the database table for this plugin.
-data ChannelRepoUrl = ChannelRepoUrl
-    { channel :: M.Channel
-    , repoUrl :: RepoUrl
-    } deriving (Show)
+data RepoUrlRow = RepoUrlRow RepoUrl
 
-instance FromRow ChannelRepoUrl where
-    fromRow = ChannelRepoUrl <$> field <*> field
+instance FromRow RepoUrlRow where
+    fromRow = RepoUrlRow <$> field
