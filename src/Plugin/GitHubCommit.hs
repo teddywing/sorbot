@@ -18,9 +18,12 @@ gitHubCommit = Plugin
 
 gitHubCommitAction :: PluginAction
 gitHubCommitAction message dbConn = do
-    rs <- query_ dbConn "SELECT channel, repo_url \
+    rs <- query dbConn "SELECT channel, repo_url \
         \ FROM plugin_github_commit_channel_repo_urls \
-        \ LIMIT 1" :: IO [ChannelRepoUrl]
+        \ WHERE channel = ? \
+        \ LIMIT 1"
+        (Only (M.channel message))
+        :: IO [ChannelRepoUrl]
     return $ response rs
   where
     response []     = ""
