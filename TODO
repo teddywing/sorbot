@@ -1,0 +1,10 @@
+TODO
+
+2017.08.04:
+- Return a possible error result from plugin action
+- Integrate chat
+    - IRC plugin
+    - Slack plugin
+    - Generic chat interface for both IRC and Slack
+- Command for the GitHub plugin `git remote set origin URL`
+- Hello plugin with random display of greetings
