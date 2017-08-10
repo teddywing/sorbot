@@ -2,6 +2,11 @@ module Lib
     ( someFunc
     ) where
 
+import Control.Exception (catch)
+-- import System.Environment
+-- import System.IO
+-- import System.IO.Error
+
 import Database.SQLite.Simple
 
 import Message
@@ -17,5 +22,8 @@ someFunc = do
         Just plugin = matchPlugin message
     dbConn <- open "db/sorbot_development.sqlite3"
     response <- performPlugin plugin message dbConn
-    putStrLn response
+    putStrLn response `catch` handleError
     close dbConn
+
+handleError :: IOError -> IO ()
+handleError err = putStrLn $ show err

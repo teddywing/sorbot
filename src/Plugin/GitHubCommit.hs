@@ -24,12 +24,15 @@ gitHubCommitAction message dbConn = do
         \ LIMIT 1"
         (Only (M.channel message))
         :: IO [RepoUrlRow]
-    return $ response rs
+    -- return $ response rs
+    respond rs
   where
-    response []     = ""
-    response ((RepoUrlRow r):rs) =
-        r ++ "/commits/" ++ M.text message =~ matchRegex gitHubCommit
+    respond []     = fail "I couldn't find a repo URL for this channel. \
+        \ Try `git remote set origin REPO_URL`"
+    respond ((RepoUrlRow r):rs) =
+        return r ++ "/commits/" ++ M.text message =~ matchRegex gitHubCommit
 -- TODO: Make an Either type for plugins to return errors
+-- if empty query result, return an empty error, otherwise return the string
 
 type Id = Int
 
