@@ -26,8 +26,9 @@ gitHubCommitAction message dbConn = do
         :: IO [RepoUrlRow]
     return $ respond rs
   where
-    respond []     = Left "I couldn't find a repo URL for this channel. \
-        \Try `git remote set origin REPO_URL`"
+    respond [] =
+        Left "I couldn't find a repo URL for this channel. \
+            \Try `git remote set origin REPO_URL`"
     respond ((RepoUrlRow r):_) =
         Right $ r ++ "/commits/" ++ M.text message =~ matchRegex gitHubCommit
 
