@@ -8,7 +8,7 @@ import qualified Data.ByteString as B
 import qualified Data.Text as T
 
 import Database.SQLite.Simple
-import Network.IRC.Client
+import qualified Network.IRC.Client as IRC
 
 import Message
 import Plugin
@@ -31,10 +31,10 @@ someFunc = do
 
 connectIRC :: B.ByteString -> Int -> T.Text -> IO ()
 connectIRC host port nick = do
-    conn <- connectWithTLS host port 1
-    let cfg = defaultIRCConf nick
+    conn <- IRC.connectWithTLS host port 1
+    let cfg = IRC.defaultIRCConf nick
     -- let cfg' = cfg { _eventHandlers = yourCustomEventHandlers : _eventHandlers cfg }
     let cfg' = cfg {
-          _channels = ["#test-chan-13513"]
+          IRC._channels = ["#test-chan-13513"]
         }
-    start conn cfg'
+    IRC.start conn cfg'
