@@ -40,6 +40,7 @@ packages:
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
 extra-deps:
+- cryptonite-0.21
 - dbmigrations-2.0.0
 - dbmigrations-sqlite-2.0.0
 - HDBC-sqlite3-2.3.3.1
@@ -47,7 +48,9 @@ extra-deps:
 - yaml-light-0.1.4
 
 # Override default flag values for local packages and extra-deps
-flags: {}
+flags:
+  cryptonite:
+    support_aesni: false
 
 # Extra package databases containing global packages
 extra-package-dbs: []
