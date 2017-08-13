@@ -6,6 +6,7 @@ module Lib
 
 import qualified Data.ByteString as B
 import qualified Data.Text as T
+import qualified Data.Text.Encoding as TE
 
 import Database.SQLite.Simple
 import qualified Network.IRC.Client as IRC
@@ -43,6 +44,11 @@ handlePrivmsg :: IRC.EventHandler s
 handlePrivmsg = IRC.EventHandler
     { IRC._description = ""
     , IRC._matchType = IRC.EPrivmsg
-    , IRC._eventFunc = \evt ->
-        IRC.send $ IRC.Privmsg "#test-chan-13513" (Right "test")
+    , IRC._eventFunc = \evt -> dispatchEvent evt
     }
+  where
+    dispatchEvent (IRC.Event serv (IRC.User nick) (IRC.Privmsg _ (Right msg))) =
+        IRC.send $ IRC.Privmsg nick (Right (TE.decodeUtf8 serv))
+    dispatchEvent (IRC.Event serv
+      (IRC.Channel chan nick) (IRC.Privmsg _ (Right msg))) =
+        IRC.send $ IRC.Privmsg chan (Right (TE.decodeUtf8 serv))
