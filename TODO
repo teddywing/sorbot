@@ -8,3 +8,9 @@ TODO
     - Generic chat interface for both IRC and Slack
 - Command for the GitHub plugin `git remote set origin URL`
 - Hello plugin with random display of greetings
+
+
+2017.08.15:
+- Handle Nothing from `matchPlugin message`
+- Handle "sorbot: " prefix
+- Use `Data.Text` instead of `String`
