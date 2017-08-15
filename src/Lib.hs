@@ -20,7 +20,7 @@ someFunc = do
     --         }
     --     Just plugin = matchPlugin message
     -- dbConn <- open "db/sorbot_development.sqlite3"
-    -- response <- performPlugin plugin message dbConn
+    -- response <- performPlugin plugin message
     -- putStrLn $ case response of
     --     Left e  -> e
     --     Right r -> r

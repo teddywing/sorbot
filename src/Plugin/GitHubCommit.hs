@@ -17,13 +17,16 @@ gitHubCommit = Plugin
     }
 
 gitHubCommitAction :: PluginAction
-gitHubCommitAction message dbConn = do
+gitHubCommitAction message = do
+    dbConn <- open "db/sorbot_development.sqlite3"
     rs <- query dbConn "SELECT repo_url \
         \ FROM plugin_github_commit_channel_repo_urls \
         \ WHERE channel = ? \
         \ LIMIT 1"
         (Only (M.channel message))
         :: IO [RepoUrlRow]
+    close dbConn
+
     return $ respond rs
   where
     respond [] =
