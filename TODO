@@ -1,9 +1,9 @@
 TODO
 
 2017.08.04:
-- Return a possible error result from plugin action
+v Return a possible error result from plugin action
 - Integrate chat
-    - IRC plugin
+    v IRC plugin
     - Slack plugin
     - Generic chat interface for both IRC and Slack
 - Command for the GitHub plugin `git remote set origin URL`
@@ -11,6 +11,6 @@ TODO
 
 
 2017.08.15:
-- Handle Nothing from `matchPlugin message`
+v Handle Nothing from `matchPlugin message`
 - Handle "sorbot: " prefix
-- Use `Data.Text` instead of `String`
+v Use `Data.Text` instead of `String`
