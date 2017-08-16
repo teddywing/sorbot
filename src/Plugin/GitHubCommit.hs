@@ -36,7 +36,7 @@ gitHubCommitAction message = do
             \Try `git remote set origin REPO_URL`."
     respond ((RepoUrlRow r):_) =
         Right $ r `T.append` "/commits/" `T.append` T.pack (
-            (T.unpack $ M.text message) =~ matchRegex gitHubCommit)
+            M.textStr message =~ matchRegex gitHubCommit)
 
 type Id = Int
 

@@ -2,6 +2,8 @@ module Message
     ( Message(..)
     , Channel
     , Nick
+
+    , textStr
     ) where
 
 import qualified Data.Text as T
@@ -15,3 +17,6 @@ data Message = Message
     , channel :: Channel
     , nick    :: Nick
     }
+
+textStr :: Message -> String
+textStr = T.unpack . text

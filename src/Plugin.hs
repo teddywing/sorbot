@@ -22,7 +22,7 @@ matchPlugin message = firstPlugin $ matchPlugins message plugins
 -- | Filter the list of plugins to those that match the given message.
 matchPlugins :: M.Message -> [Plugin] -> [Plugin]
 matchPlugins message plugins =
-    [p | p <- plugins, (T.unpack $ M.text message) =~ matchRegex p]
+    [p | p <- plugins, M.textStr message =~ matchRegex p]
 
 -- | Run the action belonging to the plugin, stored in its `perform` field.
 performPlugin :: Plugin -> PluginAction
