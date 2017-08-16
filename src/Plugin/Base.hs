@@ -8,8 +8,6 @@ import Database.SQLite.Simple
 
 import Message
 
--- TODO: Replace Connection with a type class
--- type PluginAction = Message -> Connection -> IO (Either String String)
 type PluginAction = Message -> IO (Either String String)
 
 data Plugin = Plugin
