@@ -4,12 +4,14 @@ module Message
     , Nick
     ) where
 
-type Channel = String
+import qualified Data.Text as T
 
-type Nick = String
+type Channel = T.Text
+
+type Nick = T.Text
 
 data Message = Message
-    { text    :: String
+    { text    :: T.Text
     , channel :: Channel
     , nick    :: Nick
     }

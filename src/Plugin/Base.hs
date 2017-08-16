@@ -4,11 +4,13 @@ module Plugin.Base
     , Plugin(..)
     ) where
 
+import qualified Data.Text as T
+
 import Database.SQLite.Simple
 
 import Message
 
-type PluginAction = Message -> IO (Either String String)
+type PluginAction = Message -> IO (Either T.Text T.Text)
 
 data Plugin = Plugin
     { matchRegex :: String

@@ -32,9 +32,9 @@ handlePrivmsg = IRC.EventHandler
   where
     dispatchEvent (IRC.Event _ (IRC.User nick) (IRC.Privmsg _ (Right msg))) = do
         let message = Message
-                { text    = T.unpack msg
-                , channel = T.unpack nick
-                , nick    = T.unpack nick
+                { text    = msg
+                , channel = nick
+                , nick    = nick
                 }
         response <- liftIO $ privmsgFromPlugin message
         case response of
@@ -43,9 +43,9 @@ handlePrivmsg = IRC.EventHandler
     dispatchEvent (IRC.Event
       _ (IRC.Channel chan nick) (IRC.Privmsg _ (Right msg))) = do
         let message = Message
-                { text    = T.unpack msg
-                , channel = T.unpack chan
-                , nick    = T.unpack nick
+                { text    = msg
+                , channel = chan
+                , nick    = nick
                 }
         response <- liftIO $ privmsgFromPlugin message
         case response of
@@ -60,8 +60,8 @@ privmsgFromPlugin message = do
             response <- liftIO $ performPlugin plugin message
             return $ case response of
                 Left err -> Just $ IRC.send $ IRC.Privmsg
-                    (T.pack (channel message))
-                    (Right (T.pack err))
+                    (channel message)
+                    (Right err)
                 Right r  -> Just $ IRC.send $ IRC.Privmsg
-                    (T.pack (channel message))
-                    (Right (T.pack r))
+                    (channel message)
+                    (Right r)

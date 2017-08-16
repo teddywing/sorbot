@@ -4,6 +4,8 @@ module Plugin.GitHubCommit
     ( gitHubCommit
     ) where
 
+import qualified Data.Text as T
+
 import Database.SQLite.Simple
 import Database.SQLite.Simple.FromRow
 import Text.Regex.TDFA
@@ -33,11 +35,12 @@ gitHubCommitAction message = do
         Left "I couldn't find a repo URL for this channel. \
             \Try `git remote set origin REPO_URL`."
     respond ((RepoUrlRow r):_) =
-        Right $ r ++ "/commits/" ++ M.text message =~ matchRegex gitHubCommit
+        Right $ r `T.append` "/commits/" `T.append` T.pack (
+            (T.unpack $ M.text message) =~ matchRegex gitHubCommit)
 
 type Id = Int
 
-type RepoUrl = String
+type RepoUrl = T.Text
 
 -- | A type to match the database table for this plugin.
 data RepoUrlRow = RepoUrlRow RepoUrl
