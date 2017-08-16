@@ -48,10 +48,6 @@ handlePrivmsg = IRC.EventHandler
                 , channel = T.unpack chan
                 , nick    = T.unpack nick
                 }
-        -- case privmsgFromPlugin message of
-            -- ()   -> return ()
-            -- msg  -> IRC.send msg
-        -- response <- privmsgFromPlugin message
         response <- liftIO $ privmsgFromPlugin message
         case response of
             Nothing -> return ()
