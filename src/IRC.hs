@@ -53,19 +53,20 @@ handlePrivmsg = IRC.EventHandler
             -- msg  -> IRC.send msg
         -- response <- privmsgFromPlugin message
         response <- liftIO $ privmsgFromPlugin message
-        IRC.send response
+        case response of
+            Nothing -> return ()
+            Just r  -> r
 
-privmsgFromPlugin :: Message -> IO (IRC.Message T.Text)
+privmsgFromPlugin :: Message -> IO (Maybe (IRC.StatefulIRC s ()))
 privmsgFromPlugin message = do
     case matchPlugin message of
-        -- Nothing -> 
+        Nothing     -> return Nothing
         Just plugin -> do
-            -- let response = liftIO $ performPlugin plugin message in
             response <- liftIO $ performPlugin plugin message
             return $ case response of
-                Left err -> IRC.Privmsg
+                Left err -> Just $ IRC.send $ IRC.Privmsg
                     (T.pack (channel message))
                     (Right (T.pack err))
-                Right r  -> IRC.Privmsg
+                Right r  -> Just $ IRC.send $ IRC.Privmsg
                     (T.pack (channel message))
                     (Right (T.pack r))
