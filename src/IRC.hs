@@ -36,11 +36,10 @@ handlePrivmsg = IRC.EventHandler
                 , channel = T.unpack nick
                 , nick    = T.unpack nick
                 }
-            Just plugin = matchPlugin message
-        response <- liftIO $ performPlugin plugin message
-        IRC.send $ case response of
-            Left err -> IRC.Privmsg nick (Right (T.pack err))
-            Right r  -> IRC.Privmsg nick (Right (T.pack r))
+        response <- liftIO $ privmsgFromPlugin message
+        case response of
+            Nothing -> return ()
+            Just r  -> r
     dispatchEvent (IRC.Event
       _ (IRC.Channel chan nick) (IRC.Privmsg _ (Right msg))) = do
         let message = Message
