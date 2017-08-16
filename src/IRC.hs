@@ -48,8 +48,24 @@ handlePrivmsg = IRC.EventHandler
                 , channel = T.unpack chan
                 , nick    = T.unpack nick
                 }
-            Just plugin = matchPlugin message
-        response <- liftIO $ performPlugin plugin message
-        IRC.send $ case response of
-            Left err -> IRC.Privmsg chan (Right (T.pack err))
-            Right r  -> IRC.Privmsg chan (Right (T.pack r))
+        -- case privmsgFromPlugin message of
+            -- ()   -> return ()
+            -- msg  -> IRC.send msg
+        -- response <- privmsgFromPlugin message
+        response <- liftIO $ privmsgFromPlugin message
+        IRC.send response
+
+privmsgFromPlugin :: Message -> IO (IRC.Message T.Text)
+privmsgFromPlugin message = do
+    case matchPlugin message of
+        -- Nothing -> 
+        Just plugin -> do
+            -- let response = liftIO $ performPlugin plugin message in
+            response <- liftIO $ performPlugin plugin message
+            return $ case response of
+                Left err -> IRC.Privmsg
+                    (T.pack (channel message))
+                    (Right (T.pack err))
+                Right r  -> IRC.Privmsg
+                    (T.pack (channel message))
+                    (Right (T.pack r))
