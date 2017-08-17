@@ -18,5 +18,5 @@ v Use `Data.Text` instead of `String`
 
 2017.08.16:
 GitRemoteSetOrigin:
-- Figure out how to use capture groups
-- UPSERT instead of INSERT
+v Figure out how to use capture groups
+v UPSERT instead of INSERT
