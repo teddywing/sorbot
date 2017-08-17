@@ -11,6 +11,7 @@ import Text.Regex.TDFA
 import qualified Message as M
 import Plugin.Base
 import Plugin.GitHubCommit
+import Plugin.GitRemoteSetOrigin
 
 -- | Get the first plugin that matches the given message text.
 matchPlugin :: M.Message -> Maybe Plugin
@@ -32,4 +33,5 @@ performPlugin p message = perform p $ message
 plugins :: [Plugin]
 plugins =
     [ gitHubCommit
+    , gitRemoteSetOrigin
     ]

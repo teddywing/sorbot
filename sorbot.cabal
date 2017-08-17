@@ -21,6 +21,7 @@ library
                      , Plugin
                      , Plugin.Base
                      , Plugin.GitHubCommit
+                     , Plugin.GitRemoteSetOrigin
   build-depends:       base >= 4.7 && < 5
                      , bytestring
                      , irc-client
