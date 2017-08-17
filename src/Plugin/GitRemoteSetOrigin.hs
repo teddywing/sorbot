@@ -20,9 +20,11 @@ gitRemoteSetOrigin = Plugin
 
 gitRemoteSetOriginAction :: PluginAction
 gitRemoteSetOriginAction message = do
-    case M.textStr message =~ matchRegex gitRemoteSetOrigin of
-        ""  -> return $ Left "blast"
-        url -> do
+    case M.textStr message =~ matchRegex gitRemoteSetOrigin :: [[String]] of
+        []    -> return $ Left "blast"
+        (m:_) -> do
+            let url = last m
+
             dbConn <- liftIO $ open "db/sorbot_development.sqlite3"
             liftIO $ execute dbConn "INSERT INTO \
                 \ plugin_github_commit_channel_repo_urls \
