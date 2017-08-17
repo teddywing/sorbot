@@ -6,7 +6,7 @@ v Return a possible error result from plugin action
     v IRC plugin
     - Slack plugin
     - Generic chat interface for both IRC and Slack
-- Command for the GitHub plugin `git remote set origin URL`
+v Command for the GitHub plugin `git remote set origin URL`
 - Hello plugin with random display of greetings
 
 
