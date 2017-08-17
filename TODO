@@ -20,3 +20,10 @@ v Use `Data.Text` instead of `String`
 GitRemoteSetOrigin:
 v Figure out how to use capture groups
 v UPSERT instead of INSERT
+
+
+2017.08.17:
+- Help plugin
+- Way for plugins to only respond over QUERY (like help)
+- Add "command" and "description" fields to `Plugin` for use by Help
+- Plugin config for whether or not it requires the "sorbot: " prefix
