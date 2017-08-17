@@ -14,3 +14,9 @@ v Return a possible error result from plugin action
 v Handle Nothing from `matchPlugin message`
 - Handle "sorbot: " prefix
 v Use `Data.Text` instead of `String`
+
+
+2017.08.16:
+GitRemoteSetOrigin:
+- Figure out how to use capture groups
+- UPSERT instead of INSERT
