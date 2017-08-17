@@ -26,12 +26,27 @@ gitRemoteSetOriginAction message = do
             let url = last m
 
             dbConn <- liftIO $ open "db/sorbot_development.sqlite3"
-            liftIO $ execute dbConn "INSERT INTO \
-                \ plugin_github_commit_channel_repo_urls \
-                \ (channel, repo_url) \
-                \ VALUES \
-                \ (?, ?)"
-                (M.channel message, url)
+            liftIO $ withTransaction dbConn $ do
+                let params =
+                        [":channel"   := M.channel message
+                        , ":repo_url" := url
+                        ]
+
+                -- Upsert repo URL for channel
+                executeNamed dbConn "UPDATE \
+                    \ plugin_github_commit_channel_repo_urls \
+                    \ SET channel = :channel, \
+                    \     repo_url = :repo_url \
+                    \ WHERE channel = :channel"
+                    params
+                executeNamed dbConn "INSERT INTO \
+                    \ plugin_github_commit_channel_repo_urls \
+                    \ (channel, repo_url) \
+                    \ SELECT \
+                    \     :channel, \
+                    \     :repo_url \
+                    \ WHERE changes() = 0"
+                    params
             liftIO $ close dbConn
 
             return $ Right $ T.pack url
