@@ -49,4 +49,6 @@ gitRemoteSetOriginAction message = do
                     params
             liftIO $ close dbConn
 
-            return $ Right $ T.pack url
+            return $ Right $ "I updated the channel's repo URL to '"
+                `T.append` T.pack url
+                `T.append` "'"
