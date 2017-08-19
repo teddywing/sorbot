@@ -14,9 +14,9 @@ import qualified Message as M
 import Plugin.Base
 
 gitRemoteSetOrigin = Plugin
-    { matchRegex = "^git remote set origin ([^ ]+)$"
-    , perform = gitRemoteSetOriginAction
-    , command = "git remote set origin URL"
+    { matchRegex  = "^git remote set origin ([^ ]+)$"
+    , perform     = gitRemoteSetOriginAction
+    , command     = "git remote set origin URL"
     , description = "Set the git remote URL for this channel."
     }
 
