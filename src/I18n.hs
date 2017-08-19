@@ -1,30 +1,25 @@
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell #-}
 
 module I18n
     ( Locale(..)
-    , RenderMessage
+    , Message(..)
 
-    , mkMessage
     , translate
     ) where
 
 import qualified Data.Text as T
 
-import Text.Shakespeare.I18N (mkMessage, renderMessage, RenderMessage)
-
-data Bot = Bot
-
 data Locale = EN | FR
 
-toISOLocale :: Locale -> T.Text
-toISOLocale EN = "en"
-toISOLocale FR = "fr"
+data Message
+    = GitHubCommitRepoURLNotFound
+    | GitRemoteSetOriginUpdatedRepoURL T.Text
 
-mkMessage "Bot" "messages" "en"
+translate_en_US :: Message -> T.Text
+translate_en_US GitHubCommitRepoURLNotFound = "I couldn't find a repo URL for \
+    \this channel. Try `git remote set origin REPO_URL`."
+translate_en_US (GitRemoteSetOriginUpdatedRepoURL url) =
+    "I updated the channel's repo URL to '" `T.append` url `T.append` "'."
 
-translate :: (RenderMessage Bot b) => Locale -> b -> T.Text
-translate locale message =
-    renderMessage Bot [(toISOLocale locale)] message
+translate :: Locale -> Message -> T.Text
+translate EN = translate_en_US
