@@ -10,6 +10,7 @@ import Database.SQLite.Simple
 import Database.SQLite.Simple.FromRow
 import Text.Regex.TDFA
 
+import I18n
 import qualified Message as M
 import Plugin.Base
 
