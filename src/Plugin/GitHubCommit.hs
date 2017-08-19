@@ -33,8 +33,9 @@ gitHubCommitAction message = do
     return $ respond rs
   where
     respond [] =
-        Left "I couldn't find a repo URL for this channel. \
-            \Try `git remote set origin REPO_URL`."
+        -- Left "I couldn't find a repo URL for this channel. \
+        --     \Try `git remote set origin REPO_URL`."
+        Left $ translate EN MsgGitHubCommitRepoURLNotFound
     respond ((RepoUrlRow r):_) =
         Right $ r `T.append` "/commits/" `T.append` T.pack (
             M.textStr message =~ matchRegex gitHubCommit)
