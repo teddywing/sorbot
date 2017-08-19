@@ -10,8 +10,8 @@ import Text.Regex.TDFA
 
 import qualified Message as M
 import Plugin.Base
-import Plugin.GitHubCommit
-import Plugin.GitRemoteSetOrigin
+import qualified Plugin.PluginList as PL (plugins)
+import Plugin.Help
 
 -- | Get the first plugin that matches the given message text.
 matchPlugin :: M.Message -> Maybe Plugin
@@ -29,9 +29,5 @@ matchPlugins message plugins =
 performPlugin :: Plugin -> PluginAction
 performPlugin p message = perform p $ message
 
--- | The list of plugins to load
 plugins :: [Plugin]
-plugins =
-    [ gitHubCommit
-    , gitRemoteSetOrigin
-    ]
+plugins = PL.plugins ++ [help]

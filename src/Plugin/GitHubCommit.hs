@@ -17,6 +17,8 @@ import Plugin.Base
 gitHubCommit = Plugin
     { matchRegex = "^[0-9a-f]{40}$"
     , perform = gitHubCommitAction
+    , command = "GIT_SHA"
+    , description = "Generate a commit URL based on the given SHA."
     }
 
 gitHubCommitAction :: PluginAction
