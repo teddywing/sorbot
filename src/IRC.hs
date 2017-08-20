@@ -57,21 +57,23 @@ handlePrivmsg = IRC.EventHandler
 
 privmsgFromPlugin :: Message -> IO (Maybe [IRC.StatefulIRC s ()])
 privmsgFromPlugin message = do
-    case matchPlugin message of
-        Nothing     -> return Nothing
-        Just plugin -> do
-            response <- liftIO $ performPlugin plugin message
-            return $ case response of
-                Left err -> Just $
-                    [IRC.send $ IRC.Privmsg
-                        (toChannel plugin message)
-                        (Right err)]
-                Right r  -> Just $
-                    map (\r ->
-                            IRC.send $ IRC.Privmsg
-                                (toChannel plugin message)
-                                (Right r) )
-                        (splitAtNewlines $ splitLongLines r)
+    case messageForBot message of
+        Nothing      -> return Nothing
+        Just message -> case matchPlugin message of
+            Nothing     -> return Nothing
+            Just plugin -> do
+                response <- liftIO $ performPlugin plugin message
+                return $ case response of
+                    Left err -> Just $
+                        [IRC.send $ IRC.Privmsg
+                            (toChannel plugin message)
+                            (Right err)]
+                    Right r  -> Just $
+                        map (\r ->
+                                IRC.send $ IRC.Privmsg
+                                    (toChannel plugin message)
+                                    (Right r) )
+                            (splitAtNewlines $ splitLongLines r)
   where
     -- IRC only permits 512 bytes per line. Use less to allow for protocol
     -- information that gets sent in addition to the message content.
@@ -82,3 +84,8 @@ privmsgFromPlugin message = do
     toChannel plugin message = case queryOnly plugin of
         False -> channel message
         True  -> nick message
+
+messageForBot :: Message -> Maybe Message
+messageForBot m = case T.stripPrefix "sorbot: " (text m) of
+    Nothing -> Nothing
+    Just t  -> Just m { text = t }
