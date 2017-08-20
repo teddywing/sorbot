@@ -7,6 +7,7 @@ import Options.Applicative
 
 data Options = Options
     { slackApiToken :: String
+    , language      :: String
     }
 
 options :: Parser Options
@@ -16,6 +17,12 @@ options = Options
         <> metavar "TOKEN"
         <> value ""
         <> help "Token to access Slack's real-time messaging API" )
+    <*> strOption
+         ( long "language"
+        <> short 'l'
+        <> metavar "en"
+        <> value "en"
+        <> help "Set the language Sorbot will speak in (en | fr)" )
 
 parseOptions :: IO ()
 parseOptions = do

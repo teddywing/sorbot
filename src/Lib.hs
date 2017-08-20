@@ -13,5 +13,5 @@ import Plugin
 
 someFunc :: IO ()
 someFunc = do
+    parseOptions
     connectIRC "irc.freenode.net" 6697 "test-bot-7890asdf"
-    -- parseOptions
