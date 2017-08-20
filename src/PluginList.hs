@@ -3,6 +3,7 @@ module PluginList
     ) where
 
 import Plugin.Base (Plugin)
+import Plugin.Factorial
 import Plugin.GitHubCommit
 import Plugin.GitRemoteSetOrigin
 
@@ -10,6 +11,7 @@ import Plugin.GitRemoteSetOrigin
 -- cause a circular import.
 plugins :: [Plugin]
 plugins =
-    [ gitHubCommit
+    [ factorial
+    , gitHubCommit
     , gitRemoteSetOrigin
     ]

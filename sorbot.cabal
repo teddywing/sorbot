@@ -23,6 +23,7 @@ library
                      , Plugin
                      , PluginList
                      , Plugin.Base
+                     , Plugin.Factorial
                      , Plugin.GitHubCommit
                      , Plugin.GitRemoteSetOrigin
                      , Plugin.Help
@@ -33,6 +34,7 @@ library
                      , regex-tdfa
                      , sqlite-simple
                      , text
+                     , text-show
   default-language:    Haskell2010
 
 executable sorbot-exe
