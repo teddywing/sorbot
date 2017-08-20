@@ -1,4 +1,4 @@
-module Plugin.PluginList
+module PluginList
     ( plugins
     ) where
 

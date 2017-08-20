@@ -6,7 +6,7 @@ module Plugin.Help
 
 import qualified Data.Text as T
 
-import qualified Plugin.PluginList as PL (plugins)
+import qualified PluginList as PL (plugins)
 import Plugin.Base
 
 help = Plugin

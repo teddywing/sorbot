@@ -10,7 +10,7 @@ import Text.Regex.TDFA
 
 import qualified Message as M
 import Plugin.Base
-import qualified Plugin.PluginList as PL (plugins)
+import qualified PluginList as PL (plugins)
 import Plugin.Help
 
 -- | Get the first plugin that matches the given message text.
