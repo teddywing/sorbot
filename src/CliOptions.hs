@@ -1,6 +1,8 @@
 module CliOptions
     ( Options(..)
 
+    , lang
+
     , parseOptions
     ) where
 
@@ -43,3 +45,9 @@ parseOptions = do
          ( fullDesc
         <> progDesc "A chat bot with a plugin interface that does a bunch of \
             \random things." )
+
+-- | A convenience function to get the configured locale.
+lang :: IO Locale
+lang = do
+    opts <- parseOptions
+    return $ language opts
