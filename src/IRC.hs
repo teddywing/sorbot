@@ -16,7 +16,7 @@ import Plugin (matchPlugin, performPlugin)
 
 connectIRC :: B.ByteString -> Int -> T.Text -> IO ()
 connectIRC host port nick = do
-    conn <- IRC.connectWithTLS host port 1
+    conn <- IRC.connectWithTLS host port 0.2
     let cfg = IRC.defaultIRCConf nick
     let cfg' = cfg
             {
