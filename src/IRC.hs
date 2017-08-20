@@ -50,30 +50,31 @@ handlePrivmsg = IRC.EventHandler
                 , channel = chan
                 , nick    = nick
                 }
-        response <- liftIO $ privmsgFromPlugin message
-        case response of
-            Nothing -> return ()
-            Just r  -> sequence_ r
+        case messageForBot message of
+            Nothing      -> return ()
+            Just message -> do
+                response <- liftIO $ privmsgFromPlugin message
+                case response of
+                    Nothing -> return ()
+                    Just r  -> sequence_ r
 
 privmsgFromPlugin :: Message -> IO (Maybe [IRC.StatefulIRC s ()])
 privmsgFromPlugin message = do
-    case messageForBot message of
-        Nothing      -> return Nothing
-        Just message -> case matchPlugin message of
-            Nothing     -> return Nothing
-            Just plugin -> do
-                response <- liftIO $ performPlugin plugin message
-                return $ case response of
-                    Left err -> Just $
-                        [IRC.send $ IRC.Privmsg
-                            (toChannel plugin message)
-                            (Right err)]
-                    Right r  -> Just $
-                        map (\r ->
-                                IRC.send $ IRC.Privmsg
-                                    (toChannel plugin message)
-                                    (Right r) )
-                            (splitAtNewlines $ splitLongLines r)
+    case matchPlugin message of
+        Nothing     -> return Nothing
+        Just plugin -> do
+            response <- liftIO $ performPlugin plugin message
+            return $ case response of
+                Left err -> Just $
+                    [IRC.send $ IRC.Privmsg
+                        (toChannel plugin message)
+                        (Right err)]
+                Right r  -> Just $
+                    map (\r ->
+                            IRC.send $ IRC.Privmsg
+                                (toChannel plugin message)
+                                (Right r) )
+                        (splitAtNewlines $ splitLongLines r)
   where
     -- IRC only permits 512 bytes per line. Use less to allow for protocol
     -- information that gets sent in addition to the message content.
