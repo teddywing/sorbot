@@ -10,7 +10,7 @@ import TextShow (showt)
 import qualified Message as M
 import Plugin.Base
 
-factorial = Plugin
+factorial = defaultPlugin
     { matchRegex  = "^([0-9]+)!$"
     , perform     = factorialAction
     , command     = "<integer>!"

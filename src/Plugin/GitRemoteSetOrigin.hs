@@ -13,7 +13,7 @@ import Text.Regex.TDFA ((=~))
 import qualified Message as M
 import Plugin.Base
 
-gitRemoteSetOrigin = Plugin
+gitRemoteSetOrigin = defaultPlugin
     { matchRegex  = "^git remote set origin ([^ ]+)$"
     , perform     = gitRemoteSetOriginAction
     , command     = "git remote set origin <url>"

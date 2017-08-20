@@ -9,7 +9,7 @@ import qualified Data.Text as T
 import qualified PluginList as PL (plugins)
 import Plugin.Base
 
-help = Plugin
+help = defaultPlugin
     { matchRegex  = "^help$"
     , perform     = helpAction
     , command     = "help"

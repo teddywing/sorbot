@@ -1,7 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Plugin.Base
     ( PluginAction
 
     , Plugin(..)
+    , defaultPlugin
     ) where
 
 import qualified Data.Text as T
@@ -17,7 +20,17 @@ data Plugin = Plugin
     , perform     :: PluginAction
     , command     :: T.Text
     , description :: T.Text
+    , queryOnly   :: Bool
     }
 
 instance Show Plugin where
-    show (Plugin r _ _ _) = "matchRegex = " ++ r
+    show (Plugin r _ _ _ _) = "matchRegex = " ++ r
+
+defaultPlugin :: Plugin
+defaultPlugin = Plugin
+    { matchRegex  = ""
+    , perform     = \m -> return (Left "")
+    , command     = ""
+    , description = ""
+    , queryOnly   = False
+    }
