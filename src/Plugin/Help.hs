@@ -19,7 +19,12 @@ help = Plugin
 helpAction :: PluginAction
 helpAction _ = do
     return $ Right $ T.intercalate "\n"
-        [command p `T.append` " – " `T.append` description p | p <- plugins]
+        [T.justifyRight longestCommandLen ' ' (command p)
+            `T.append` " – "
+            `T.append` description p
+        | p <- plugins]
+  where
+    longestCommandLen = foldr (max) 0 (map (T.length . command) plugins)
 
 plugins :: [Plugin]
 plugins = PL.plugins ++ [help]
