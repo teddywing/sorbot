@@ -18,8 +18,8 @@ help = Plugin
 
 helpAction :: PluginAction
 helpAction _ = do
-    return $ Right $ T.concat
-        [command p `T.append` "\t" `T.append` description p | p <- plugins]
+    return $ Right $ T.intercalate "\n"
+        [command p `T.append` " – " `T.append` description p | p <- plugins]
 
 plugins :: [Plugin]
 plugins = PL.plugins ++ [help]

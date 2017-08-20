@@ -4,6 +4,7 @@ module IRC
     ( connectIRC
     ) where
 
+import Control.Monad (sequence_)
 import Control.Monad.IO.Class (liftIO)
 import qualified Data.ByteString as B
 import qualified Data.Text as T
@@ -40,7 +41,7 @@ handlePrivmsg = IRC.EventHandler
         response <- liftIO $ privmsgFromPlugin message
         case response of
             Nothing -> return ()
-            Just r  -> r
+            Just r  -> sequence_ r
     dispatchEvent (IRC.Event
       _ (IRC.Channel chan nick) (IRC.Privmsg _ (Right msg))) = do
         let message = Message
@@ -51,18 +52,18 @@ handlePrivmsg = IRC.EventHandler
         response <- liftIO $ privmsgFromPlugin message
         case response of
             Nothing -> return ()
-            Just r  -> r
+            Just r  -> sequence_ r
 
-privmsgFromPlugin :: Message -> IO (Maybe (IRC.StatefulIRC s ()))
+privmsgFromPlugin :: Message -> IO (Maybe [IRC.StatefulIRC s ()])
 privmsgFromPlugin message = do
     case matchPlugin message of
         Nothing     -> return Nothing
         Just plugin -> do
             response <- liftIO $ performPlugin plugin message
             return $ case response of
-                Left err -> Just $ IRC.send $ IRC.Privmsg
-                    (channel message)
-                    (Right err)
-                Right r  -> Just $ IRC.send $ IRC.Privmsg
-                    (channel message)
-                    (Right r)
+                Left err -> Just $
+                    [IRC.send $ IRC.Privmsg (channel message) (Right err)]
+                Right r  -> Just $
+                    map (\r ->
+                            IRC.send $ IRC.Privmsg (channel message) (Right r) )
+                        (T.lines r)
