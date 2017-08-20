@@ -14,7 +14,8 @@ factorial = Plugin
     { matchRegex  = "^([0-9]+)!$"
     , perform     = factorialAction
     , command     = "<integer>!"
-    , description = "Calculate the factorial of <integer>"
+    , description = "Calculate the factorial of <integer> for whole numbers \
+        \up to 35000."
     }
 
 factorialAction :: PluginAction
