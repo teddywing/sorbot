@@ -66,4 +66,10 @@ privmsgFromPlugin message = do
                 Right r  -> Just $
                     map (\r ->
                             IRC.send $ IRC.Privmsg (channel message) (Right r) )
-                        (T.lines r)
+                        (splitAtNewlines $ splitLongLines r)
+  where
+    -- IRC only permits 512 bytes per line. Use less to allow for protocol
+    -- information that gets sent in addition to the message content.
+    splitLongLines txt = T.chunksOf 400 txt
+
+    splitAtNewlines lst = foldr (\s acc -> (T.lines s) ++ acc) [] lst
