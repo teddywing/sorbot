@@ -23,8 +23,8 @@ v UPSERT instead of INSERT
 
 
 2017.08.17:
-- Help plugin
+v Help plugin
 - Way for plugins to only respond over QUERY (like help)
-- Add "command" and "description" fields to `Plugin` for use by Help
+v Add "command" and "description" fields to `Plugin` for use by Help
 - Plugin config for whether or not it requires the "sorbot: " prefix
-- I18n (http://www.yesodweb.com/book/internationalization)
+v I18n (http://www.yesodweb.com/book/internationalization)
