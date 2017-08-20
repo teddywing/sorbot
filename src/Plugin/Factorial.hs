@@ -23,7 +23,14 @@ factorialAction message = do
         []    -> return $ Left "I didn't understand"
         (m:_) -> do
             let number = last m
-            return $ Right $ showt $ calculate $ (read number :: Int)
+            return $ Right $ result (read number :: Integer)
+  where
+    result n = case calculate n of
+        Nothing -> "Input is too large."
+        Just n  -> showt n
 
-calculate :: (Integral a) => a -> a
-calculate n = product [1..n]
+calculate :: Integer -> Maybe Integer
+calculate n
+    | n <= 0      = Just 0
+    | n <= 35000  = Just $ product [1..n]
+    | otherwise   = Nothing
