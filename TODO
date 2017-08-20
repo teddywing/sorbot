@@ -31,9 +31,9 @@ v I18n (http://www.yesodweb.com/book/internationalization)
 
 
 2017.08.20:
-- Factorial plugin
+v Factorial plugin
 - Translate strings
 - --language option
 - Feed language to functions that need i18n
-- Don't prevent IRC flood when sending the help so that it doesn't take a
+v Don't prevent IRC flood when sending the help so that it doesn't take a
   second for each line to appear
