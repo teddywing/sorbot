@@ -25,5 +25,5 @@ factorialAction message = do
             let number = last m
             return $ Right $ showt $ calculate $ (read number :: Int)
 
-calculate :: (Enum a, Num a) => a -> a
+calculate :: (Integral a) => a -> a
 calculate n = product [1..n]
