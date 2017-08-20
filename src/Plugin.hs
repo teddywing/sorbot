@@ -11,7 +11,7 @@ import Text.Regex.TDFA
 import qualified Message as M
 import Plugin.Base
 import qualified PluginList as PL (plugins)
-import Plugin.Help
+import Plugin.Help (help)
 
 -- | Get the first plugin that matches the given message text.
 matchPlugin :: M.Message -> Maybe Plugin

@@ -3,9 +3,9 @@ module PluginList
     ) where
 
 import Plugin.Base (Plugin)
-import Plugin.Factorial
-import Plugin.GitHubCommit
-import Plugin.GitRemoteSetOrigin
+import Plugin.Factorial (factorial)
+import Plugin.GitHubCommit (gitHubCommit)
+import Plugin.GitRemoteSetOrigin (gitRemoteSetOrigin)
 
 -- | The list of plugins to load, minus the Help plugin, which would otherwise
 -- cause a circular import.
