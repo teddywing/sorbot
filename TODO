@@ -35,3 +35,5 @@ v I18n (http://www.yesodweb.com/book/internationalization)
 - Translate strings
 - --language option
 - Feed language to functions that need i18n
+- Don't prevent IRC flood when sending the help so that it doesn't take a
+  second for each line to appear
