@@ -42,8 +42,6 @@ gitHubCommitAction message = do
         return $ Right $ r `T.append` "/commits/" `T.append` T.pack (
             M.textStr message =~ matchRegex gitHubCommit)
 
-type Id = Int
-
 type RepoUrl = T.Text
 
 -- | A type to match the database table for this plugin.
