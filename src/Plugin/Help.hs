@@ -14,6 +14,7 @@ help = defaultPlugin
     , perform     = helpAction
     , command     = "help"
     , description = "Show a list of available bot commands."
+    , queryOnly   = True
     }
 
 helpAction :: PluginAction

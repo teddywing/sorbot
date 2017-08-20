@@ -13,6 +13,7 @@ import qualified Network.IRC.Client as IRC
 
 import Message
 import Plugin (matchPlugin, performPlugin)
+import Plugin.Base (queryOnly)
 
 connectIRC :: B.ByteString -> Int -> T.Text -> IO ()
 connectIRC host port nick = do
@@ -62,10 +63,14 @@ privmsgFromPlugin message = do
             response <- liftIO $ performPlugin plugin message
             return $ case response of
                 Left err -> Just $
-                    [IRC.send $ IRC.Privmsg (channel message) (Right err)]
+                    [IRC.send $ IRC.Privmsg
+                        (toChannel plugin message)
+                        (Right err)]
                 Right r  -> Just $
                     map (\r ->
-                            IRC.send $ IRC.Privmsg (channel message) (Right r) )
+                            IRC.send $ IRC.Privmsg
+                                (toChannel plugin message)
+                                (Right r) )
                         (splitAtNewlines $ splitLongLines r)
   where
     -- IRC only permits 512 bytes per line. Use less to allow for protocol
@@ -73,3 +78,7 @@ privmsgFromPlugin message = do
     splitLongLines txt = T.chunksOf 400 txt
 
     splitAtNewlines lst = foldr (\s acc -> (T.lines s) ++ acc) [] lst
+
+    toChannel plugin message = case queryOnly plugin of
+        False -> channel message
+        True  -> nick message
