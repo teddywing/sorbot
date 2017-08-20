@@ -28,3 +28,10 @@ v Help plugin
 v Add "command" and "description" fields to `Plugin` for use by Help
 - Plugin config for whether or not it requires the "sorbot: " prefix
 v I18n (http://www.yesodweb.com/book/internationalization)
+
+
+2017.08.20:
+- Factorial plugin
+- Translate strings
+- --language option
+- Feed language to functions that need i18n
