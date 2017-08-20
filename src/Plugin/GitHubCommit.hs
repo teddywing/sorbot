@@ -12,6 +12,7 @@ import Text.Regex.TDFA
 
 import I18n
 import qualified Message as M
+import CliOptions (Options(language), parseOptions)
 import Plugin.Base
 
 gitHubCommit = defaultPlugin
@@ -32,13 +33,19 @@ gitHubCommitAction message = do
         :: IO [RepoUrlRow]
     close dbConn
 
-    return $ respond rs
+    opts <- parseOptions
+    let lang = language opts
+
+    return $ respond rs lang
   where
-    respond [] =
-        Left $ translate EN GitHubCommitRepoURLNotFound
-    respond ((RepoUrlRow r):_) =
+    respond [] lang =
+        Left $ translate lang GitHubCommitRepoURLNotFound
+    respond ((RepoUrlRow r):_) _ =
         Right $ r `T.append` "/commits/" `T.append` T.pack (
             M.textStr message =~ matchRegex gitHubCommit)
+
+-- TODO
+-- lang :: 
 
 type Id = Int
 

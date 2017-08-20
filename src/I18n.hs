@@ -21,5 +21,13 @@ translate_en_US GitHubCommitRepoURLNotFound = "I couldn't find a repo URL for \
 translate_en_US (GitRemoteSetOriginUpdatedRepoURL url) =
     "I updated the channel's repo URL to '" `T.append` url `T.append` "'."
 
+translate_fr_FR :: Message -> T.Text
+translate_fr_FR GitHubCommitRepoURLNotFound = "Je n'ai pas trouvé une URL de \
+    \repo pour ce channel. Essaye `git remote set origin REPO_URL`."
+translate_fr_FR (GitRemoteSetOriginUpdatedRepoURL url) =
+    "J'ai mis à jour l'URL de repo pour ce channel ("
+        `T.append` url `T.append` ")."
+
 translate :: Locale -> Message -> T.Text
 translate EN = translate_en_US
+translate FR = translate_fr_FR
