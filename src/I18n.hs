@@ -9,7 +9,7 @@ module I18n
 
 import qualified Data.Text as T
 
-data Locale = EN | FR
+data Locale = EN | FR deriving (Show)
 
 data Message
     = GitHubCommitRepoURLNotFound

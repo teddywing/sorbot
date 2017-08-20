@@ -7,10 +7,19 @@ module CliOptions
 import Data.Semigroup ((<>))
 import Options.Applicative
 
+import I18n (Locale(EN, FR))
+
 data Options = Options
     { slackApiToken :: String
-    , language      :: String
+    , language      :: Locale
     }
+
+-- | Parse the language command line option string into a `Locale` type
+parseLanguage :: ReadM Locale
+parseLanguage = eitherReader $ \s -> case s of
+    "en" -> Right EN
+    "fr" -> Right FR
+    _    -> Left "Unrecognised language code"
 
 options :: Parser Options
 options = Options
@@ -19,11 +28,11 @@ options = Options
         <> metavar "TOKEN"
         <> value ""
         <> help "Token to access Slack's real-time messaging API" )
-    <*> strOption
+    <*> option parseLanguage
          ( long "language"
         <> short 'l'
         <> metavar "en"
-        <> value "en"
+        <> value EN
         <> help "Set the language Sorbot will speak in (en | fr)" )
 
 parseOptions :: IO Options
