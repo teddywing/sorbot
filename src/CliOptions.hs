@@ -1,5 +1,7 @@
 module CliOptions
-    ( parseOptions
+    ( Options(..)
+
+    , parseOptions
     ) where
 
 import Data.Semigroup ((<>))
@@ -24,10 +26,9 @@ options = Options
         <> value "en"
         <> help "Set the language Sorbot will speak in (en | fr)" )
 
-parseOptions :: IO ()
+parseOptions :: IO Options
 parseOptions = do
     execParser opts
-    return ()
   where
     opts = info (options <**> helper)
          ( fullDesc
