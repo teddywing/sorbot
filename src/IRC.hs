@@ -6,6 +6,8 @@ module IRC
 
 import Control.Monad (sequence_)
 import Control.Monad.IO.Class (liftIO)
+import Control.Monad.Trans.Class (lift)
+import Control.Monad.Trans.Maybe (MaybeT(MaybeT), runMaybeT)
 import qualified Data.ByteString as B
 import qualified Data.Text as T
 
@@ -33,13 +35,14 @@ handlePrivmsg = IRC.EventHandler
     , IRC._eventFunc = \evt -> dispatchEvent evt
     }
   where
+    dispatchEvent :: IRC.UnicodeEvent -> IRC.StatefulIRC s ()
     dispatchEvent (IRC.Event _ (IRC.User nick) (IRC.Privmsg _ (Right msg))) = do
         let message = Message
                 { text    = msg
                 , channel = nick
                 , nick    = nick
                 }
-        response <- liftIO $ privmsgFromPlugin message
+        response <- lift $ runMaybeT $ privmsgFromPlugin message
         case response of
             Nothing -> return ()
             Just r  -> sequence_ r
@@ -53,29 +56,27 @@ handlePrivmsg = IRC.EventHandler
         case messageForBot message of
             Nothing      -> return ()
             Just message -> do
-                response <- liftIO $ privmsgFromPlugin message
+                response <- lift $ runMaybeT $ privmsgFromPlugin message
                 case response of
                     Nothing -> return ()
                     Just r  -> sequence_ r
 
-privmsgFromPlugin :: Message -> IO (Maybe [IRC.StatefulIRC s ()])
+privmsgFromPlugin :: Message -> MaybeT IO [IRC.StatefulIRC s ()]
 privmsgFromPlugin message = do
-    case matchPlugin message of
-        Nothing     -> return Nothing
-        Just plugin -> do
-            response <- liftIO $ performPlugin plugin message
-            return $ case response of
-                Left err -> Just $
-                    [IRC.send $ IRC.Privmsg
-                        (toChannel plugin message)
-                        (Right err)]
-                Right r  -> Just $
-                    map (\r ->
-                            IRC.send $ IRC.Privmsg
-                                (toChannel plugin message)
-                                (Right r) )
-                        (splitAtNewlines $ splitLongLines r)
+    plugin <- liftMaybe $ matchPlugin message
+    response <- liftIO $ performPlugin plugin message
+    return $ case response of
+        Left err -> [IRC.send $ IRC.Privmsg
+            (toChannel plugin message)
+            (Right err)]
+        Right r  -> map
+            (\r -> IRC.send $ IRC.Privmsg
+                (toChannel plugin message)
+                (Right r) )
+            (splitAtNewlines $ splitLongLines r)
   where
+    liftMaybe = MaybeT . return
+
     -- IRC only permits 512 bytes per line. Use less to allow for protocol
     -- information that gets sent in addition to the message content.
     splitLongLines txt = T.chunksOf 400 txt
