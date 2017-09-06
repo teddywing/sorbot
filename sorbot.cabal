@@ -16,6 +16,7 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Lib
+                     , Bot
                      , CliOptions
                      , I18n
                      , IRC
@@ -30,6 +31,7 @@ library
   build-depends:       base >= 4.7 && < 5
                      , bytestring
                      , irc-client
+                     , mtl
                      , optparse-applicative
                      , regex-tdfa
                      , sqlite-simple
