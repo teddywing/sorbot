@@ -23,7 +23,7 @@ import Plugin.Base
 gitHubCommit :: Bot Plugin
 gitHubCommit = do
     cfg <- ask
-    return $ defaultPlugin
+    return defaultPlugin
         { matchRegex  = "^[0-9a-f]{40}$"
         , perform     = gitHubCommitAction
         , command     = "<git_sha>"
