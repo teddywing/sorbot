@@ -7,13 +7,18 @@ module Plugin.Base
     , defaultPlugin
     ) where
 
+import Control.Monad.Trans.Class (lift)
 import qualified Data.Text as T
 
 import Database.SQLite.Simple
 
+-- import Config (Config)
+import Bot (Bot(Bot))
 import Message
 
-type PluginAction = Message -> IO (Either T.Text T.Text)
+type PluginAction = Message -> Bot (Either T.Text T.Text)
+
+-- newtype Foo = Config Plugin
 
 data Plugin = Plugin
     { matchRegex  :: String
