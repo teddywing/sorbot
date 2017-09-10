@@ -7,7 +7,7 @@ module Plugin.GitHubCommit
 
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Trans.Class (lift)
-import Control.Monad.Trans.Reader (ask)
+import Control.Monad.Trans.Reader (ask, asks)
 import qualified Data.Text as T
 
 import Database.SQLite.Simple
@@ -18,18 +18,19 @@ import Text.Regex.TDFA
 import Bot (Bot, runBot, BotConfig)
 import I18n
 import qualified Message as M
-import qualified CliOptions as Cli (lang)
+import qualified CliOptions as Cli (lang, language)
 import Plugin.Base
 
 -- gitHubCommit :: BotConfig m => m Plugin
 gitHubCommit :: Bot Plugin
 gitHubCommit = do
+    -- cfg <- asks Cli.language
     cfg <- ask
     return defaultPlugin
         { matchRegex  = "^[0-9a-f]{40}$"
         , perform     = gitHubCommitAction
         , command     = "<git_sha>"
-        , description = translate (lang cfg) GitHubCommitDescription
+        , description = translate (Cli.language cfg) GitHubCommitDescription
             -- "Generate a commit URL based on the given SHA."
         }
 
@@ -48,9 +49,10 @@ gitHubCommitAction message = do
   where
     respond :: Bot (Either T.Text T.Text)
     respond [] = do
-        lang <- Cli.lang
+        cfg <- ask
+        -- lang <- Cli.lang
         -- TODO: remove need for `lang`
-        return $ Left $ translate (lang cfg) GitHubCommitRepoURLNotFound
+        return $ Left $ translate (Cli.language cfg) GitHubCommitRepoURLNotFound
     respond ((RepoUrlRow r):_) = do
         -- bot <- ask
         -- plugin <- runBot bot >>= gitHubCommit
