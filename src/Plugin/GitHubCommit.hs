@@ -7,7 +7,8 @@ module Plugin.GitHubCommit
 
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Trans.Class (lift)
-import Control.Monad.Trans.Reader (ask, asks)
+-- import Control.Monad.Trans.Reader (ask, asks)
+import Control.Monad.Reader (ask, asks)
 import qualified Data.Text as T
 
 import Database.SQLite.Simple
@@ -47,7 +48,7 @@ gitHubCommitAction message = do
 
     respond rs
   where
-    respond :: Bot (Either T.Text T.Text)
+    respond :: [RepoUrlRow] -> Bot (Either T.Text T.Text)
     respond [] = do
         cfg <- ask
         -- lang <- Cli.lang
