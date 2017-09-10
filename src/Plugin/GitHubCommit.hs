@@ -1,3 +1,4 @@
+-- {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Plugin.GitHubCommit
@@ -14,12 +15,13 @@ import Database.SQLite.Simple.FromRow
 import Text.Regex.TDFA
 
 -- import Config (Config(..))
-import Bot (Bot, runBot)
+import Bot (Bot, runBot, BotConfig)
 import I18n
 import qualified Message as M
 import qualified CliOptions as Cli (lang)
 import Plugin.Base
 
+-- gitHubCommit :: BotConfig m => m Plugin
 gitHubCommit :: Bot Plugin
 gitHubCommit = do
     cfg <- ask
