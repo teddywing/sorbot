@@ -42,7 +42,7 @@ gitHubCommitAction message = do
         :: Bot [RepoUrlRow]
     liftIO $ close dbConn
 
-    liftIO $ respond rs
+    respond rs
   where
     respond :: Bot (Either T.Text T.Text)
     respond [] = do
