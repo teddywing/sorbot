@@ -10,10 +10,12 @@ import qualified Data.Text as T
 import Database.SQLite.Simple
 import Text.Regex.TDFA ((=~))
 
+import Bot (Bot)
 import qualified Message as M
 import Plugin.Base
 
-gitRemoteSetOrigin = defaultPlugin
+gitRemoteSetOrigin :: Bot Plugin
+gitRemoteSetOrigin = return defaultPlugin
     { matchRegex  = "^git remote set origin ([^ ]+)$"
     , perform     = gitRemoteSetOriginAction
     , command     = "git remote set origin <url>"
@@ -22,7 +24,8 @@ gitRemoteSetOrigin = defaultPlugin
 
 gitRemoteSetOriginAction :: PluginAction
 gitRemoteSetOriginAction message = do
-    case M.textStr message =~ matchRegex gitRemoteSetOrigin :: [[String]] of
+    plugin <- gitRemoteSetOrigin
+    case M.textStr message =~ matchRegex plugin :: [[String]] of
         []    -> return $ Left "blast"
         (m:_) -> do
             let url = last m
