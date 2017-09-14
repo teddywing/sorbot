@@ -23,17 +23,14 @@ help = do
 
 helpAction :: PluginAction
 helpAction _ = do
+    plugins' <- sequence plugins
     return $ Right $ T.intercalate "\n"
-        -- [T.justifyRight longestCommandLen ' ' (command p)
-        --     `T.append` " – "
-        --     `T.append` description p
-        -- | p <- plugins']
+        [T.justifyRight (longestCommandLen plugins') ' ' (command p)
+            `T.append` " – "
+            `T.append` description p
+        | p <- plugins']
   where
-    longestCommandLen = foldr (max) 0 (map (T.length . command) plugins)
-
-    helpText plugin = T.justifyRight longestCommandLen ' ' (command plugin)
-        `T.append` " – "
-        `T.append` description plugin
+    longestCommandLen plugins = foldr (max) 0 (map (T.length . command) plugins)
 
 plugins :: [Bot Plugin]
 plugins = PL.plugins ++ [help]
