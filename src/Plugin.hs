@@ -8,13 +8,14 @@ import qualified Data.Text as T
 
 import Text.Regex.TDFA
 
+import Bot (Bot)
 import qualified Message as M
 import Plugin.Base
 import qualified PluginList as PL (plugins)
 import Plugin.Help (help)
 
 -- | Get the first plugin that matches the given message text.
-matchPlugin :: M.Message -> Maybe Plugin
+matchPlugin :: M.Message -> Maybe (Bot Plugin)
 matchPlugin message = firstPlugin $ matchPlugins message plugins
   where
     firstPlugin []     = Nothing
@@ -29,5 +30,5 @@ matchPlugins message plugins =
 performPlugin :: Plugin -> PluginAction
 performPlugin p message = perform p $ message
 
-plugins :: [Plugin]
+plugins :: [Bot Plugin]
 plugins = PL.plugins ++ [help]
