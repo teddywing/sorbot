@@ -17,3 +17,5 @@ newtype Bot a = Bot
     { runBot :: ReaderT Options IO a
     -- } deriving (Monad, Functor, Applicative, BotConfig, MonadIO)
     } deriving (Monad, Functor, Applicative, MonadReader Options, MonadIO)
+
+-- instance MonadPlus Bot
