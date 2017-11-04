@@ -13,6 +13,7 @@ import qualified Data.Text as T
 
 import qualified Network.IRC.Client as IRC
 
+import Bot (Bot)
 import Message
 import Plugin (matchPlugin, performPlugin)
 import Plugin.Base (queryOnly)
@@ -61,10 +62,11 @@ handlePrivmsg = IRC.EventHandler
                     Nothing -> return ()
                     Just r  -> sequence_ r
 
-privmsgFromPlugin :: Message -> MaybeT IO [IRC.StatefulIRC s ()]
+privmsgFromPlugin :: Message -> MaybeT Bot [IRC.StatefulIRC s ()]
 privmsgFromPlugin message = do
     plugin <- liftMaybe $ matchPlugin message
-    response <- liftIO $ performPlugin plugin message
+    response <- lift $ performPlugin plugin message
+    -- plugin' <- liftMaybe plugin
     return $ case response of
         Left err -> [IRC.send $ IRC.Privmsg
             (toChannel plugin message)

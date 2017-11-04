@@ -67,8 +67,10 @@ matchPlugins message plugins =
 --     [return p | p <- plugins', M.textStr message =~ matchRegex p]
 
 -- | Run the action belonging to the plugin, stored in its `perform` field.
-performPlugin :: Plugin -> PluginAction
-performPlugin p message = perform p $ message
+performPlugin :: Bot Plugin -> PluginAction
+performPlugin p message = do
+    plugin <- p
+    perform plugin $ message
 
 plugins :: [Bot Plugin]
 plugins = PL.plugins ++ [help]
