@@ -17,7 +17,7 @@ import PluginList as PL (plugins)
 import Control.Monad.Reader (runReaderT)
 import CliOptions (Options(..))
 import Plugin.Help as Help (help)
-import I18n (Locale(EN))
+import I18n (Locale(EN, FR))
 import Plugin (performPlugin)
 import qualified Data.Text.IO as TIO
 
@@ -42,7 +42,7 @@ someFunc = do
                 }))
         Options
             { slackApiToken = "booya"
-            , language = EN
+            , language = FR
             }
     case hilp of
         Left x -> TIO.putStrLn x

@@ -24,8 +24,8 @@ translate_en_US (GitRemoteSetOriginUpdatedRepoURL url) =
     "I updated the channel's repo URL to '" `T.append` url `T.append` "'."
 
 translate_fr_FR :: Message -> T.Text
--- TODO: translate
-translate_fr_FR GitHubCommitDescription = "Generate a commit URL based on the given SHA."
+translate_fr_FR GitHubCommitDescription = "Générer un URL de commit à partir \
+    \d'un SHA."
 translate_fr_FR GitHubCommitRepoURLNotFound = "Je n'ai pas trouvé une URL de \
     \repo pour ce channel. Essaye `git remote set origin REPO_URL`."
 translate_fr_FR (GitRemoteSetOriginUpdatedRepoURL url) =
