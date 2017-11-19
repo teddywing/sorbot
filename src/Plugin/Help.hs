@@ -32,5 +32,7 @@ helpAction _ = do
   where
     longestCommandLen plugins = foldr (max) 0 (map (T.length . command) plugins)
 
+-- TODO: Build a new plugin list _in the help plugin_ that applies Config to a
+-- list of plugins and uses that to render the text
 plugins :: [Bot Plugin]
 plugins = PL.plugins ++ [help]
